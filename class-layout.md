@@ -1,7 +1,9 @@
 # Kolejność składowych klasy
 
-- **Eventy (`public event ...`) deklarujemy na samej górze klasy**, przed polami, właściwościami i metodami.
+- **Zagnieżdżone delegaty (`public delegate ...` wewnątrz klasy) deklarujemy na samej górze klasy**, jeszcze przed eventami.
+- **Eventy (`public event ...`) deklarujemy zaraz po delegatach**, przed polami, właściwościami i metodami.
 - Dalej, w tej kolejności: pola serializowane, pozostałe pola prywatne, właściwości, metody.
+- **Wyjątek: właściwość dotycząca tylko jednego pola stoi zaraz za tym polem.** Pozostałe właściwości (bardziej złożone, wyliczane z kilku składowych albo odpowiadające na pytanie, np. `CanActivate`) stoją po wszystkich polach, przed metodami.
 - **Metody układamy według kolejności wywołań w silniku Unity:**
   1. `Reset` (wyjątek: przed `Awake`),
   2. `Awake`,
@@ -51,5 +53,39 @@ public class ModeController : MonoBehaviour
     public FilmMode Mode { get; private set; }
 
     private void Awake() { ... }
+}
+```
+
+Zagnieżdżony delegat stoi nad eventami:
+
+```csharp
+public class Health : MonoBehaviour
+{
+    public delegate void DamageTakenHandler(float amount, Vector3 hitPoint);
+
+    public event DamageTakenHandler OnDamageTaken;
+    public event Action OnDied;
+
+    [SerializeField]
+    private float maxHealth = 100f;
+}
+```
+
+Właściwość jednego pola stoi zaraz za polem, pozostałe po polach:
+
+```csharp
+public class Segment : MonoBehaviour
+{
+    [SerializeField]
+    private int length;
+    public int Length
+    {
+        get => length;
+        set => length = value;
+    }
+
+    private bool isEnabled;
+
+    public bool CanActivate => gameObject.activeSelf && length > 0;
 }
 ```

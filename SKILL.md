@@ -75,15 +75,15 @@ public class OperatorCamera : MonoBehaviour
     [Header("Movement")]
     [SerializeField]
     private float moveSpeed = 3f;
+    public float MoveSpeed => moveSpeed;
 
     [Tooltip("Time to reach target velocity. 0 = instant.")]
     [SerializeField]
     private float moveSmoothTime = 0.12f;
 
     private Camera cam;
-
     public Camera Camera => cam;
-    public float MoveSpeed => moveSpeed;
+
     public bool InputEnabled { get; private set; } = true;
 }
 ```
