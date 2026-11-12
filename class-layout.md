@@ -40,7 +40,7 @@ public class Door : MonoBehaviour
 public class ModeController : MonoBehaviour
 {
     /// <summary>Raised after the mode changed; the argument is the new mode.</summary>
-    public event Action<FilmMode> ModeChanged;
+    public event Action<FilmMode> OnModeChanged;
 
     [SerializeField]
     private InputActionReference toggleAction;

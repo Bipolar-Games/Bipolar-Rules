@@ -105,7 +105,7 @@ Referencje do komponentów i obiektów sceny podpinamy automatycznie w `Reset()`
 
 ### Eventy
 
-Domyślnie C#-owe eventy (`Action`, własny delegat od dwóch argumentów), `UnityEvent` tylko dla efektów niewpływających na grę. Szczegóły i przykłady: `events.md`.
+Domyślnie C#-owe eventy (`Action`, własny delegat od dwóch argumentów, nazwy z prefiksem `On`), `UnityEvent` tylko dla efektów niewpływających na grę. Szczegóły i przykłady: `events.md`.
 
 ### Enumy i typy rozszerzalne
 
@@ -118,6 +118,7 @@ Domyślnie C#-owe eventy (`Action`, własny delegat od dwóch argumentów), `Uni
 - Pola prywatne i zmienne lokalne: `camelCase` (bez prefiksu `_` / `m_`).
 - Stałe: `PascalCase` (`private const float Skin = 0.01f;`).
 - Interfejsy z prefiksem `I`.
+- Eventy z prefiksem `On` (`OnOpened`, `OnCreating`), handlery `Obiekt_NazwaEventu` (`Door_OnOpened`). Publiczne metody nie zaczynają się od `On` (szczegóły w `events.md`).
 - **`MonoBehaviour` i `ScriptableObject` — zawsze we własnym pliku, nazwa pliku = nazwa klasy** (wymóg Unity).
 - Pozostałe typy publiczne (zwykłe klasy, struktury, enumy, delegaty) mogą dzielić plik, gdy są ze sobą ściśle powiązane.
 - Komentarze i nazwy w kodzie po angielsku; `<summary>` dla publicznych klas i nieoczywistych członków.

@@ -3,10 +3,14 @@
 - **Event bez argumentów lub z jednym argumentem — zwykły `Action` / `Action<T>`.**
 - **Od dwóch argumentów w górę — własny delegat**, żeby każdy argument miał nazwę.
 - Delegat nie potrzebuje osobnego pliku. Jeśli event z tym delegatem wywołuje jedna klasa, deklarujemy delegat w jej pliku.
+- **Nazwa eventu zaczyna się od `On`** (`OnOpened`, `OnModeChanged`). Dzięki temu po wpisaniu `On` IDE pokazuje listę eventów obiektu.
+- **Czas gramatyczny rozróżnia moment:** czas przeszły to zdarzenie po fakcie (`OnCreated`), czas teraźniejszy ciągły to zdarzenie przed nim (`OnCreating`).
+- **Handler eventu nazywamy `Obiekt_NazwaEventu`**, tak jak podpowiada Visual Studio (`door.OnOpened += Door_OnOpened;`).
+- **Publiczne metody nie zaczynają się od `On`.** Prefiks `On` jest zarezerwowany dla eventów i komunikatów Unity (`OnEnable`, `OnTriggerEnter` itd.).
 
 ```csharp
-public event Action Retaken;
-public event Action<FilmMode> ModeChanged;
+public event Action OnRetaken;
+public event Action<FilmMode> OnModeChanged;
 ```
 
 ```csharp
@@ -15,14 +19,14 @@ public delegate void DamageTakenHandler(float amount, Vector3 hitPoint);
 
 public class Health : MonoBehaviour
 {
-    public event DamageTakenHandler DamageTaken;
+    public event DamageTakenHandler OnDamageTaken;
 }
 ```
 
 Źle:
 
 ```csharp
-public event Action<float, Vector3> DamageTaken;  // co oznacza float, a co Vector3?
+public event Action<float, Vector3> OnDamageTaken;  // co oznacza float, a co Vector3?
 ```
 
 ## C# eventy zamiast `UnityEvent`
@@ -37,12 +41,12 @@ public event Action<float, Vector3> DamageTaken;  // co oznacza float, a co Vect
 // Door.cs — mechanika, nic nie wie o dźwięku
 public class Door : MonoBehaviour
 {
-    public event Action Opened;
+    public event Action OnOpened;
 
     public void Open()
     {
         // logika otwarcia
-        Opened?.Invoke();
+        OnOpened?.Invoke();
     }
 }
 
@@ -57,15 +61,15 @@ public class DoorSoundBridge : MonoBehaviour
 
     private void OnEnable()
     {
-        door.Opened += OnOpened;
+        door.OnOpened += Door_OnOpened;
     }
 
     private void OnDisable()
     {
-        door.Opened -= OnOpened;
+        door.OnOpened -= Door_OnOpened;
     }
 
-    private void OnOpened()
+    private void Door_OnOpened()
     {
         openSound.Play();
     }
