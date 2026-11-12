@@ -103,20 +103,39 @@ private void Log(string message, [CallerMemberName] string caller = null) { ... 
 
 ### Wymagane komponenty — `RequireComponent`
 
-- **Jeśli klasa używa `GetComponent<T>()` do komponentu na tym samym obiekcie** (w `Reset()`, `Awake()` lub gdziekolwiek), **ma nad deklaracją klasy `[RequireComponent(typeof(T))]`**, w osobnej linijce.
-- **Komponent niewymagany pobieramy przez `TryGetComponent`** i obsługujemy jego brak. Wtedy `RequireComponent` nie jest potrzebne.
-- `GetComponentInChildren` i `GetComponentInParent` nie podlegają tej regule, bo `RequireComponent` sprawdza tylko ten sam obiekt.
+- **Jeśli klasa wymaga komponentu na tym samym obiekcie, ma nad deklaracją klasy `[RequireComponent(typeof(T))]`**, w osobnej linijce.
+- **Pola wymaganego komponentu nie serializujemy.** Komponent na pewno jest na obiekcie, więc sposób jego pobrania jest oczywisty i nie podpinamy go w Inspectorze ani w `Reset()`. Pobieramy go w `Awake()` albo przez właściwość, która przy pierwszym odczycie zapisuje referencję w polu.
+- **Komponent opcjonalny albo taki, który może być na innym obiekcie, nie ma `RequireComponent`.** W `Reset()` zbieramy go tylko przez `GetComponentInChildren`, `GetComponentInParent` lub `Find...` (patrz `reset-references.md`).
+- **W runtime komponent, którego brak jest dopuszczalny** (na tym samym lub innym obiekcie), pobieramy przez `TryGetComponent` i obsługujemy jego brak.
 
 ```csharp
 [RequireComponent(typeof(Door))]
 public class DoorSoundBridge : MonoBehaviour
 {
-    [SerializeField]
     private Door door;
 
-    private void Reset()
+    private void Awake()
     {
         door = GetComponent<Door>();
+    }
+}
+```
+
+```csharp
+[RequireComponent(typeof(Door))]
+public class DoorSoundBridge : MonoBehaviour
+{
+    private Door door;
+
+    private Door Door
+    {
+        get
+        {
+            if (door == null)
+                door = GetComponent<Door>();
+
+            return door;
+        }
     }
 }
 ```
@@ -126,7 +145,18 @@ public class DoorSoundBridge : MonoBehaviour
 ```csharp
 public class DoorSoundBridge : MonoBehaviour      // brak [RequireComponent(typeof(Door))]
 {
-    [SerializeField]
+    private Door door;
+
+    private void Awake()
+    {
+        door = GetComponent<Door>();
+    }
+}
+
+[RequireComponent(typeof(Door))]
+public class DoorSoundBridge : MonoBehaviour
+{
+    [SerializeField]                               // wymagany komponent nie jest serializowany ani podpinany w Reset()
     private Door door;
 
     private void Reset()
