@@ -1,4 +1,4 @@
-### Referencje podpinane w `Reset()`
+# Referencje podpinane w `Reset()`
 
 Gdy komponent potrzebuje referencji do innych komponentów, podpinamy je automatycznie w `Reset()`. Unity wywołuje `Reset()` tylko w edytorze: przy dodaniu komponentu do obiektu oraz po wybraniu *Reset* z menu komponentu. Wynik zapisuje się w polu `[SerializeField]`, więc w grze nie ma kosztu wyszukiwania.
 
