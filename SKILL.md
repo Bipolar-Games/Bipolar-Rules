@@ -67,6 +67,8 @@ Stosujemy zasady **SOLID**, a przede wszystkim **hermetyzację**:
 
 `[SerializeField]` (i pozostałe atrybuty: `[Header]`, `[Tooltip]`, `[Range]` itd.) piszemy **w osobnej linijce nad polem**, nie w tej samej linii.
 
+**Wyjątek: atrybut na argumencie funkcji piszemy w tej samej linii** co argument (`void Log([CallerMemberName] string caller = null)`).
+
 ```csharp
 public class OperatorCamera : MonoBehaviour
 {
@@ -91,6 +93,12 @@ public class OperatorCamera : MonoBehaviour
 ```csharp
 public float moveSpeed = 3f;                    // publiczne pole
 [SerializeField] private float moveSpeed = 3f;  // atrybut w tej samej linii
+```
+
+Poprawnie (wyjątek dla argumentów):
+
+```csharp
+private void Log(string message, [CallerMemberName] string caller = null) { ... }
 ```
 
 ### Wymagane komponenty — `RequireComponent`
