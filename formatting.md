@@ -9,8 +9,9 @@
   - **Wyjątek: warunek, którego ciałem jest wyłącznie `return`, `break` lub `continue`, nigdy nie dostaje klamer** (zawsze w osobnej linijce), także wewnątrz konstrukcji z klamrami.
 - **Łańcuch `if` / `else if` / `else` to jedna całość:** jeśli którakolwiek gałąź musi mieć klamry, wszystkie gałęzie je mają.
 - **Unikamy `else` i `else if`.** Zazwyczaj się da:
-  - przez wydzielenie logiki do osobnej metody, która w pierwszej gałęzi kończy się `return` po `if`,
-  - przez operator ternarny przy prostym przypisaniu wartości.
+  - przez operator ternarny przy prostym przypisaniu lub zwróceniu jednej z dwóch wartości (ma pierwszeństwo przed wieloma `return`),
+  - przez `switch expression` przy trzech lub więcej wartościach (bez zagnieżdżonych ternary),
+  - przez wydzielenie logiki do osobnej metody, która w pierwszej gałęzi kończy się `return` po `if`, gdy gałęzie wykonują akcje, a nie wybierają wartości.
 - **Negację w warunkach zapisujemy jako `== false`, nie przez `!`.**
 - **Obiekty Unity (`UnityEngine.Object`: komponenty, `GameObject`, assety):**
   - czy **istnieje** → `if (target)`,
@@ -60,13 +61,34 @@ for (int i = 0; i < actors.Count; i++)
     }
 }
 
-// zamiast else: osobna metoda z return po if
+// zamiast else przy zwracaniu jednej z dwóch wartości: operator ternarny
 private string GetLabel()
 {
-    if (isLocked)
-        return "Locked";
+    return isLocked ? "Locked" : "Open";
+}
 
-    return "Open";
+// trzy lub więcej wartości: switch expression
+private string GetLabel()
+{
+    return state switch
+    {
+        DoorState.Locked => "Locked",
+        DoorState.Closed => "Closed",
+        _ => "Open",
+    };
+}
+
+// zamiast else przy akcjach: osobna metoda z return po if
+private void Interact()
+{
+    if (isLocked)
+    {
+        ShowLock();
+        PlaySound();
+        return;
+    }
+
+    Open();
 }
 
 // zamiast if / else przy przypisaniu: operator ternarny
@@ -119,6 +141,6 @@ else
 
 if (isLocked)
     label = "Locked";
-else                                          // zbędny else: ternary albo osobna metoda z return
+else                                          // zbędny else: ternary
     label = "Open";
 ```
