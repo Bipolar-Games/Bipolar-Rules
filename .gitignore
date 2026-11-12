@@ -1,0 +1,15 @@
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Edytory
+.vscode/
+.idea/
+*.swp
+*~
+
+# Kopie zapasowe i pliki robocze
+*.bak
+*.tmp
+*.orig
