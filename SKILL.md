@@ -92,6 +92,41 @@ public float moveSpeed = 3f;                    // publiczne pole
 [SerializeField] private float moveSpeed = 3f;  // atrybut w tej samej linii
 ```
 
+### Wymagane komponenty — `RequireComponent`
+
+- **Jeśli klasa używa `GetComponent<T>()` do komponentu na tym samym obiekcie** (w `Reset()`, `Awake()` lub gdziekolwiek), **ma nad deklaracją klasy `[RequireComponent(typeof(T))]`**, w osobnej linijce.
+- **Komponent niewymagany pobieramy przez `TryGetComponent`** i obsługujemy jego brak. Wtedy `RequireComponent` nie jest potrzebne.
+- `GetComponentInChildren` i `GetComponentInParent` nie podlegają tej regule, bo `RequireComponent` sprawdza tylko ten sam obiekt.
+
+```csharp
+[RequireComponent(typeof(Door))]
+public class DoorSoundBridge : MonoBehaviour
+{
+    [SerializeField]
+    private Door door;
+
+    private void Reset()
+    {
+        door = GetComponent<Door>();
+    }
+}
+```
+
+Źle:
+
+```csharp
+public class DoorSoundBridge : MonoBehaviour      // brak [RequireComponent(typeof(Door))]
+{
+    [SerializeField]
+    private Door door;
+
+    private void Reset()
+    {
+        door = GetComponent<Door>();
+    }
+}
+```
+
 ### Pozostałe zasady SOLID w praktyce
 
 - **Single Responsibility:** jeden `MonoBehaviour` = jedna odpowiedzialność. Zamiast jednego wielkiego managera — kilka małych komponentów.

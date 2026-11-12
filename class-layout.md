@@ -32,8 +32,7 @@ public class Door : MonoBehaviour
 }
 ```
 - **Stany podglądane w Inspectorze** to pola i właściwości, które zmieniają się w trakcie gry i chcemy je widzieć do debugowania (np. `isMoving`, `shotTime`).
-  - Pola stanu oznaczamy `[SerializeField]`, choć ich zapis w scenie nie jest potrzebny. **Nie używamy `[NaughtyAttributes.ShowNonSerializedField]`**, bo źle się wyświetla.
-  - Właściwości stanu oznaczamy `[NaughtyAttributes.ShowNativeProperty]` z NaughtyAttributes (patrz `naughty-attributes.md`).
+  - Pola stanu oznaczamy `[SerializeField]`, choć ich zapis w scenie nie jest potrzebny.
   - Grupujemy je w jednym bloku po pozostałych polach prywatnych, z nagłówkiem `[Header("States")]` nad pierwszym polem. `[Header]` działa tylko na polach, więc gdy blok zaczyna się od właściwości, użyj komentarza `// States`.
 
 ```csharp
@@ -49,9 +48,6 @@ public class ModeController : MonoBehaviour
     [SerializeField]
     private int lastTickSecond;
 
-#if NAUGHTY_ATTRIBUTES
-    [NaughtyAttributes.ShowNativeProperty]
-#endif
     public FilmMode Mode { get; private set; }
 
     private void Awake() { ... }

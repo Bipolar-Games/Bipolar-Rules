@@ -2,7 +2,7 @@
 
 Gdy komponent potrzebuje referencji do innych komponentów, podpinamy je automatycznie w `Reset()`. Unity wywołuje `Reset()` tylko w edytorze: przy dodaniu komponentu do obiektu oraz po wybraniu *Reset* z menu komponentu. Wynik zapisuje się w polu `[SerializeField]`, więc w grze nie ma kosztu wyszukiwania.
 
-- **Komponent może być na tym samym obiekcie** → `GetComponent<T>()`.
+- **Komponent może być na tym samym obiekcie** → `GetComponent<T>()` (klasa ma wtedy `[RequireComponent(typeof(T))]`).
 - **Komponent może być w dzieciach** → `GetComponentInChildren<T>()`, **w rodzicu** → `GetComponentInParent<T>()`.
 - **Komponent wymaga referencji do obiektu na scenie** (np. menedżera) → w `Reset()` wolno użyć wyszukiwania po całej scenie: `FindObjectOfType<T>()` lub `FindFirstObjectByType<T>()` (zależnie od wersji Unity). To wyjątek od zakazu `Find...` w runtime, bo `Reset()` nie działa w grze.
 - Pola, które wypełnia `Reset()`, to nadal `private` + `[SerializeField]`. Można je poprawić ręcznie w Inspectorze.
@@ -10,6 +10,7 @@ Gdy komponent potrzebuje referencji do innych komponentów, podpinamy je automat
 - `Reset()` jest pierwszą metodą w kolejności składowych (przed `Awake`).
 
 ```csharp
+[RequireComponent(typeof(Door))]
 public class DoorSoundBridge : MonoBehaviour
 {
     [SerializeField]
