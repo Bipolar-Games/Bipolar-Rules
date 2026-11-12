@@ -46,6 +46,7 @@ Studio ma własne, gotowe moduły (np. serializacja interfejsów, system interak
 - **Jeśli moduł pasuje, użyj go. Nie pisz własnego odpowiednika.**
 - Jeśli żaden moduł nie pasuje albo nie masz pewności, zapytaj, zanim zaczniesz pisać własne rozwiązanie.
 - Nie modyfikuj modułów w repozytorium projektu (zasada jak dla zewnętrznych bibliotek). Brakującą funkcję zaproponuj lub rozszerz w `Assets/_Project/`.
+- Unity nie serializuje interfejsów. Referencje do interfejsów w Inspectorze podpinamy przez moduł z `Assets/Bipolar/` (sprawdź jego `README.md`), nie własnym rozwiązaniem.
 - Wzór README modułu: `module-readme-template.md`.
 
 ## Styl kodu C#
@@ -153,10 +154,33 @@ Domyślnie C#-owe eventy (`Action`, własny delegat od dwóch argumentów, nazwy
 - Pola prywatne i zmienne lokalne: `camelCase` (bez prefiksu `_` / `m_`).
 - Stałe: `PascalCase` (`private const float Skin = 0.01f;`).
 - Interfejsy z prefiksem `I`.
+- Korutyny: patrz „Korutyny” poniżej.
 - Eventy z prefiksem `On` (`OnOpened`, `OnCreating`), handlery `Obiekt_NazwaEventu` (`Door_OnOpened`). Publiczne metody nie zaczynają się od `On` (szczegóły w `events.md`).
 - **`MonoBehaviour` i `ScriptableObject` — zawsze we własnym pliku, nazwa pliku = nazwa klasy** (wymóg Unity).
 - Pozostałe typy publiczne (zwykłe klasy, struktury, enumy, delegaty) mogą dzielić plik, gdy są ze sobą ściśle powiązane.
 - Komentarze i nazwy w kodzie po angielsku; `<summary>` dla publicznych klas i nieoczywistych członków.
+
+### Korutyny
+
+Korutyna to specjalny rodzaj metody, więc ma własne zasady nazewnictwa:
+
+- **Nazwa korutyny nie jest czasownikiem.** Wywołanie korutyny w Unity tworzy obiekt, który ją wykonuje, więc nazwa opisuje tę czynność jak rzeczownik, najczęściej odczasownikowy.
+- **Nazwa kończy się przyrostkiem `Co`**, żeby od razu było widać, czym jest, i że nie wywołujemy jej jak zwykłej metody (tylko przez `StartCoroutine`).
+- **Część przed `Co` opisuje czynność**, którą korutyna wykonuje.
+
+```csharp
+private IEnumerator ScreenFadeCo() { ... }
+private IEnumerator ElementsCountingCo() { ... }
+
+StartCoroutine(ScreenFadeCo());
+```
+
+Źle:
+
+```csharp
+private IEnumerator FadeScreen() { ... }   // wygląda jak zwykła metoda, brak przyrostka Co
+FadeScreen();                              // nie uruchomi korutyny
+```
 
 ### Input
 

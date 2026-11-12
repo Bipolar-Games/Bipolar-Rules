@@ -12,7 +12,7 @@
   - przez operator ternarny przy prostym przypisaniu lub zwróceniu jednej z dwóch wartości (ma pierwszeństwo przed wieloma `return`),
   - przez `switch expression` przy trzech lub więcej wartościach (bez zagnieżdżonych ternary),
   - przez wydzielenie logiki do osobnej metody, która w pierwszej gałęzi kończy się `return` po `if`, gdy gałęzie wykonują akcje, a nie wybierają wartości.
-- **Negację w warunkach zapisujemy jako `== false`, nie przez `!`.**
+- **Sprawdzenie boola na fałsz zapisujemy tylko przez `== false`.** Operator `!` jest dozwolony wyłącznie przylegający do `=`: w `!=` (`if (a != b)`) oraz w przypisaniu odwróconej wartości (`b = !a`).
 - **Obiekty Unity (`UnityEngine.Object`: komponenty, `GameObject`, assety):**
   - czy **istnieje** → `if (target)`,
   - czy **nie istnieje** → `if (target == null)` (nie `if (!target)` ani `if (target == false)`).
@@ -26,6 +26,11 @@ for (int i = 0; i < actors.Count; i++)
 
 if (target == null)
     return;
+
+if (a != b)
+    Sync();
+
+isClosed = !isOpen;
 
 if (target && target.IsReady == false)
 {
