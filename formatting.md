@@ -13,7 +13,8 @@
   - przez `switch expression` przy trzech lub więcej wartościach (bez zagnieżdżonych ternary),
   - przez wydzielenie logiki do osobnej metody, która w pierwszej gałęzi kończy się `return` po `if`, gdy gałęzie wykonują akcje, a nie wybierają wartości.
 - **Sprawdzenie boola na fałsz zapisujemy tylko przez `== false`.** Operator `!` jest dozwolony wyłącznie przylegający do `=`: w `!=` (`if (a != b)`) oraz w przypisaniu odwróconej wartości (`b = !a`).
-- **Obiekty Unity (`UnityEngine.Object`: komponenty, `GameObject`, assety):**
+- **Obiekty Unity (`UnityEngine.Object`: komponenty, `GameObject`, assety, w tym `ScriptableObject`):**
+  - dotyczy każdego sprawdzenia, czy obiekt istnieje (czy referencja nie jest pusta ani zniszczona), także przy porównywaniu z `null`,
   - czy **istnieje** → `if (target)`,
   - czy **nie istnieje** → `if (target == null)` (nie `if (!target)` ani `if (target == false)`).
 
