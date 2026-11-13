@@ -5,7 +5,8 @@
 - Delegat nie potrzebuje osobnego pliku. Jeśli event z tym delegatem wywołuje jedna klasa, deklarujemy delegat w jej pliku.
 - **Nazwa eventu zaczyna się od `On`** (`OnOpened`, `OnModeChanged`). Dzięki temu po wpisaniu `On` IDE pokazuje listę eventów obiektu.
 - **Czas gramatyczny rozróżnia moment:** czas przeszły to zdarzenie po fakcie (`OnCreated`), czas teraźniejszy ciągły to zdarzenie przed nim (`OnCreating`).
-- **Handler eventu nazywamy `Obiekt_NazwaEventu`**, tak jak podpowiada Visual Studio (`door.OnOpened += Door_OnOpened;`).
+- **Handler używany wyłącznie jako handler nazywamy `Obiekt_NazwaEventu`**, tak jak podpowiada Visual Studio (`door.OnOpened += Door_OnOpened;`).
+- **Metoda używana zarówno jako handler, jak i wywoływana w kodzie** (a nie tylko przez event) ma zwykłą nazwę mówiącą, co robi (`RefreshView`), bez wzorca `Obiekt_NazwaEventu`.
 - **Publiczne metody nie zaczynają się od `On`.** Prefiks `On` jest zarezerwowany dla eventów i komunikatów Unity (`OnEnable`, `OnTriggerEnter` itd.).
 
 ```csharp

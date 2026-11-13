@@ -193,10 +193,10 @@ Domyślnie C#-owe eventy (`Action`, własny delegat od dwóch argumentów, nazwy
 - Stałe: `PascalCase` (`private const float Skin = 0.01f;`).
 - Interfejsy z prefiksem `I`.
 - Korutyny: patrz „Korutyny” poniżej.
-- Eventy z prefiksem `On` (`OnOpened`, `OnCreating`), handlery `Obiekt_NazwaEventu` (`Door_OnOpened`). Publiczne metody nie zaczynają się od `On` (szczegóły w `events.md`).
+- Eventy z prefiksem `On` (`OnOpened`, `OnCreating`), handlery używane wyłącznie jako handler `Obiekt_NazwaEventu` (`Door_OnOpened`), a metody używane też poza eventem mają zwykłą nazwę mówiącą, co robią. Publiczne metody nie zaczynają się od `On` (szczegóły w `events.md`).
 - **`MonoBehaviour` i `ScriptableObject` — zawsze we własnym pliku, nazwa pliku = nazwa klasy** (wymóg Unity).
 - Pozostałe typy publiczne (zwykłe klasy, struktury, enumy, delegaty) mogą dzielić plik, gdy są ze sobą ściśle powiązane.
-- Komentarze i nazwy w kodzie po angielsku; `<summary>` dla publicznych klas i nieoczywistych członków.
+- Komentarze i nazwy w kodzie po angielsku. `<summary>` dla publicznych klas i nieoczywistych członków jest opcjonalne: nie trzeba go pisać.
 
 ### Korutyny
 
