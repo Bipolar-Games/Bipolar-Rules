@@ -17,6 +17,7 @@
   - dotyczy każdego sprawdzenia, czy obiekt istnieje (czy referencja nie jest pusta ani zniszczona), także przy porównywaniu z `null`,
   - czy **istnieje** → `if (target)`,
   - czy **nie istnieje** → `if (target == null)` (nie `if (!target)` ani `if (target == false)`).
+- **Zmienne lokalne typu klasy lub struktury deklarujemy przez `var`.** Typy wbudowane (`string`, `int`, `bool`, `float` itd.) deklarujemy z jawnym typem.
 
 ```csharp
 if (isActive == false)
@@ -32,6 +33,12 @@ if (a != b)
     Sync();
 
 isClosed = !isOpen;
+
+// zmienne lokalne: var dla klas i struktur, jawny typ dla typów wbudowanych
+var door = GetComponent<Door>();
+var offset = new Vector3(0f, 1f, 0f);
+string label = door.Label;
+int count = actors.Count;
 
 if (target && target.IsReady == false)
 {
@@ -149,4 +156,8 @@ if (isLocked)
     label = "Locked";
 else                                          // zbędny else: ternary
     label = "Open";
+
+Door door = GetComponent<Door>();             // klasa: var
+Vector3 offset = new Vector3(0f, 1f, 0f);     // struktura: var
+var count = actors.Count;                     // typ wbudowany: jawny typ (int)
 ```
