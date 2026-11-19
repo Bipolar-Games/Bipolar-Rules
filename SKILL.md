@@ -1,6 +1,6 @@
 ---
 name: bipolar-rules
-description: Wspólne zasady studia Bipolar Games dla projektów Unity - styl kodu C# (hermetyzacja, SOLID, formatowanie, kolejność składowych klasy, nazewnictwo, eventy, enumy, Reset, RequireComponent, NaughtyAttributes, Input System), struktura folderów Assets/_Project i moduły studia z Assets/Bipolar. Używaj przy każdym pisaniu, zmienianiu i refaktoryzacji skryptów C# (MonoBehaviour, ScriptableObject) oraz przy dodawaniu plików i scen do projektu Unity.
+description: Wspólne zasady studia Bipolar Games dla projektów Unity - styl kodu C# (hermetyzacja, SOLID, formatowanie, kolejność składowych klasy, nazewnictwo, eventy, enumy, Reset, RequireComponent, NaughtyAttributes, Input System), struktura folderów Assets/_Project i moduły studia z Assets/Bipolar, podpisywanie commitów agenta. Używaj przy każdym pisaniu, zmienianiu i refaktoryzacji skryptów C# (MonoBehaviour, ScriptableObject) oraz przy dodawaniu plików i scen do projektu Unity.
 ---
 
 # BIPOLAR_RULES — wspólne zasady studia Bipolar Games
@@ -21,7 +21,7 @@ Pliki leżą obok `SKILL.md`. **Przed rozpoczęciem zadania przeczytaj wszystkie
 |---|---|
 | piszesz lub zmieniasz **jakikolwiek kod C#** | `formatting.md`, `class-layout.md`, `naming.md` |
 | tworzysz lub zmieniasz **komponent** (`MonoBehaviour`, `ScriptableObject`), dodajesz mu pola lub referencje | powyższe + `component-references.md` |
-| komponent potrzebuje **referencji** do innego komponentu lub obiektu sceny (`RequireComponent`, `Reset()`, `GetComponent`, `Find...`) | `component-references.md` |
+| komponent potrzebuje **referencji** do innego komponentu, obiektu sceny lub assetu (`RequireComponent`, `Reset()`, `GetComponent`, `Find...`, domyślne referencje skryptu) | `component-references.md` |
 | dodajesz **event, delegat** lub subskrypcję, nazywasz handler | `events.md` |
 | dodajesz **enum** albo typ/rodzaj czegokolwiek (NPC, przedmiot, stan, kategoria) | `enums-and-extensible-types.md` |
 | obsługujesz **wejście gracza** (Input System, `InputActionReference`) | `input.md` |
@@ -34,6 +34,7 @@ Pliki leżą obok `SKILL.md`. **Przed rozpoczęciem zadania przeczytaj wszystkie
 
 - **Namespace bazowy** to nazwa projektu (np. `MagicJam`); namespace odpowiada folderowi pod `Scripts/`.
 - Stosujemy zasady **SOLID**, a przede wszystkim **hermetyzację**.
+- **Zakres min–max nie jest `Vector2`** (`x` = min, `y` = max). Taki zakres to osobna struktura albo osobne wartości `int` / `float` (`minSpeed`, `maxSpeed`).
 
 ### Hermetyzacja
 
@@ -87,3 +88,13 @@ private void Log(string message, [CallerMemberName] string caller = null) { ... 
 - **Open/Closed, Dependency Inversion:** zależności przez interfejsy lub referencje ustawiane w Inspectorze (`[SerializeField]`), nie przez `FindFirstObjectByType` / `FindAnyObjectByType` / `GameObject.Find` w runtime. Wyjątek: `Reset()` (patrz `component-references.md`).
 - **Interface Segregation:** małe, wąskie interfejsy (`IInteractive`, a nie `IEverything`).
 - Komunikacja między systemami przez zdarzenia (`event Action<...>`) zamiast bezpośrednich wywołań w obie strony i cyklicznych zależności (patrz `events.md`).
+
+### Commity agenta
+
+Commity robione przez agenta są podpisane jako agent, a nie jako użytkownik systemowy (zazwyczaj `Kosmik`). Autora i commitującego ustawiamy w poleceniu, bez zmiany globalnej konfiguracji gita:
+
+```
+git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit -m "..."
+```
+
+Stopkę `Co-Authored-By` zostawiamy, jeśli wymaga jej środowisko.

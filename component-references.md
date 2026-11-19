@@ -105,6 +105,10 @@ private void Awake()
 }
 ```
 
+## Referencje do assetów — wartości domyślne skryptu
+
+Referencje do assetów (`ScriptableObject`, tekstury, materiały, prefaby itp.) nie powinny być za każdym razem podpinane ręcznie. **Jeśli się da, ustawiamy ich wartości domyślne w skrypcie (jako asset tekstowy `.cs`)**: w Inspectorze pliku skryptu pole `[SerializeField]` ma sekcję *Default References*. Każdy nowy komponent tego typu dostaje wtedy referencję od razu po dodaniu do obiektu. Dotyczy to tylko assetów, nie obiektów sceny (dla nich: `Reset()` powyżej).
+
 ## Wyszukiwanie obiektów po typie (Unity 6)
 
 W Unity 6 `FindObjectOfType` jest oznaczone jako przestarzałe (dokumentacja: „Use Object.FindFirstObjectByType instead or if finding any instance is acceptable the faster Object.FindAnyObjectByType”). Używamy nowych metod:

@@ -9,6 +9,7 @@
 - Eventy, handlery eventów i metody z prefiksem `On`: zasady w `events.md`.
 - Korutyny: patrz niżej.
 - Typy publiczne (zwykłe klasy, struktury, enumy, delegaty) mogą dzielić plik, gdy są ze sobą ściśle powiązane.
+- **Słowa amerykańskie, nigdy brytyjskie** (`Color`, `Behavior`, `Center`, `Initialize`). Wyjątek: `MonoBehaviour` i inne nazwy z Unity lub bibliotek, których nie da się zmienić.
 - Komentarze i nazwy w kodzie po angielsku. `<summary>` dla publicznych klas i nieoczywistych członków jest opcjonalne: nie trzeba go pisać.
 
 ## Korutyny
