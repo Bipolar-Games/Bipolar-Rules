@@ -8,8 +8,7 @@ description: Wspólne zasady studia Bipolar Games dla projektów Unity - styl ko
 Uniwersalne zasady struktury projektu i stylu kodu, wspólne dla wszystkich projektów Unity studia Bipolar.
 Instrukcje specyficzne dla projektu są w `AGENTS.md` (lub odpowiedniku) danego repozytorium.
 
-> **Nie edytuj tego pliku w trakcie pracy w repozytorium.** To kopia wspólnego szablonu dodawanego
-> do każdego projektu. Zmiany wprowadzamy w szablonie i kopiujemy do projektów. Jeśli zasada dotyczy
+> Zmiany w tym skillu wprowadzamy tylko na wyraźne polecenie użytkownika. Jeśli zasada dotyczy
 > tylko jednego projektu, wpisz ją do `AGENTS.md` tego projektu.
 > W razie konfliktu pierwszeństwo mają zasady z `AGENTS.md` projektu.
 
