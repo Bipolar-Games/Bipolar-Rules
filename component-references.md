@@ -138,3 +138,21 @@ var doors = FindObjectsOfType<Door>();             // przestarzałe w Unity 6
 ## Runtime — `TryGetComponent`
 
 **Komponent, którego brak jest dopuszczalny** (na tym samym lub innym obiekcie), pobieramy w runtime przez `TryGetComponent` i obsługujemy jego brak.
+
+## Zagnieżdżone `MonoBehaviour` i `ScriptableObject` — tylko runtime
+
+- **Zagnieżdżone klasy dziedziczące po `MonoBehaviour` i `ScriptableObject` są dozwolone**, jeśli są tworzone wyłącznie dynamicznie w runtime (`AddComponent<T>()`, `ScriptableObject.CreateInstance<T>()`) i nie są dodawane do scen ani prefabów w edytorze.
+- Zagnieżdżenia używamy celowo: Unity nie pozwala dodać zagnieżdżonego komponentu w edytorze, więc zapewnia to, że klasa powstaje tylko w runtime.
+- **Jeśli klasa ma być dodawana w edytorze** (do sceny, prefaba, jako asset), nie zagnieżdżamy jej: dajemy ją w osobnym pliku o nazwie klasy.
+
+```csharp
+public class Spawner : MonoBehaviour
+{
+    private class Blinker : MonoBehaviour { ... }   // tworzony tylko w runtime
+
+    private void Start()
+    {
+        gameObject.AddComponent<Blinker>();
+    }
+}
+```
