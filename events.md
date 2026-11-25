@@ -5,8 +5,9 @@
 - Delegat nie potrzebuje osobnego pliku. Jeśli event z tym delegatem wywołuje jedna klasa, deklarujemy delegat w jej pliku.
 - **Nazwa eventu zaczyna się od `On`** (`OnOpened`, `OnModeChanged`). Dzięki temu po wpisaniu `On` IDE pokazuje listę eventów obiektu.
 - **Czas gramatyczny rozróżnia moment:** czas przeszły to zdarzenie po fakcie (`OnCreated`), czas teraźniejszy ciągły to zdarzenie przed nim (`OnCreating`).
-- **Handler używany wyłącznie jako handler nazywamy `Obiekt_NazwaEventu`**, tak jak podpowiada Visual Studio (`door.OnOpened += Door_OnOpened;`).
-- **Metoda używana zarówno jako handler, jak i wywoływana w kodzie** (a nie tylko przez event) ma zwykłą nazwę mówiącą, co robi (`RefreshView`), bez wzorca `Obiekt_NazwaEventu`.
+- **Do eventu subskrybujemy bezpośrednio metodę, która wykonuje pracę**, jeśli przyjmuje dokładnie te same argumenty, które wychodzą z eventu (`gameManager.OnStateChanged += RefreshView;`). Nie tworzymy dodatkowej metody-opakowania tylko po to, żeby miała nazwę `Obiekt_NazwaEventu`.
+- **Wzorzec Visual Studio `Obiekt_NazwaEventu` (`GameManager_OnStateChanged`) stosujemy tylko i wyłącznie wtedy, gdy metody wykonującej pracę nie da się zasubskrybować, bo ma inną sygnaturę niż event.** Metoda `Obiekt_NazwaEventu` przyjmuje wtedy argumenty eventu i wywołuje właściwą metodę.
+- **Opakowanie z jednym wywołaniem i zgodną sygnaturą jest zbędne:** subskrybujemy wtedy wywoływaną metodę bezpośrednio.
 - **Publiczne metody nie zaczynają się od `On`.** Prefiks `On` jest zarezerwowany dla eventów i komunikatów Unity (`OnEnable`, `OnTriggerEnter` itd.).
 
 ```csharp
@@ -62,15 +63,15 @@ public class DoorSoundBridge : MonoBehaviour
 
     private void OnEnable()
     {
-        door.OnOpened += Door_OnOpened;
+        door.OnOpened += PlayOpenSound;
     }
 
     private void OnDisable()
     {
-        door.OnOpened -= Door_OnOpened;
+        door.OnOpened -= PlayOpenSound;
     }
 
-    private void Door_OnOpened()
+    private void PlayOpenSound()
     {
         openSound.Play();
     }
@@ -89,5 +90,43 @@ public class Door : MonoBehaviour
     {
         onOpened.Invoke();
     }
+}
+```
+
+## Nazwy metod subskrybowanych do eventów
+
+Sygnatura metody zgadza się z eventem: subskrybujemy ją bezpośrednio.
+
+```csharp
+public event Action OnStateChanged;       // GameManager.cs
+
+private void RefreshView() { ... }
+
+gameManager.OnStateChanged += RefreshView;
+```
+
+Sygnatura się różni: dopiero wtedy dodajemy metodę we wzorcu Visual Studio.
+
+```csharp
+public event Action<GameState> OnStateChanged;   // GameManager.cs
+
+private void RefreshView() { ... }                // nie przyjmuje GameState
+
+gameManager.OnStateChanged += GameManager_OnStateChanged;
+
+private void GameManager_OnStateChanged(GameState state)
+{
+    RefreshView();
+}
+```
+
+Źle:
+
+```csharp
+gameManager.OnStateChanged += GameManager_OnStateChanged;   // Action bez argumentów, RefreshView pasuje wprost
+
+private void GameManager_OnStateChanged()                   // zbędne opakowanie tylko z nazwą wzorca
+{
+    RefreshView();
 }
 ```
